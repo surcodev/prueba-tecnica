@@ -66,7 +66,7 @@ python manage.py migrate
 ---
 
 ## **Despliegue en la Nube**
-Si se presenta dificultades para ejecutar el proyecto de manera local, puede interactuar con la versión he desplegado en la nube a través del siguiente enlace:
+Si se presenta dificultades para ejecutar el proyecto de manera local, puede interactuar con la versión ya desplegada en la nube a través del siguiente enlace:
 
 Usuarios de Prueba:
 
