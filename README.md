@@ -68,7 +68,7 @@ python manage.py migrate
 ## **Despliegue en la Nube**
 Si se presenta dificultades para ejecutar el proyecto de manera local, puede interactuar con la versión ya desplegada en la nube a través del siguiente enlace:
 
-[Proyecto en Producción](https://surcodevv.eu.pythonanywhere.com)
+[Enlace de la prueba](https://surcodevv.eu.pythonanywhere.com)
 
 Usuarios de Prueba:
 
