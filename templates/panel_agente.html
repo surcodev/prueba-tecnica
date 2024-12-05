@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Agente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary-subtle shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Panel Agente</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="{% url 'logout' %}">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <h3>Bienvenido Agente: {{user.first_name}} {{user.last_name}}</h3>
+        <div class="my-4">
+            <h4>Citas Asignadas</h4>
+            <table class="table table-bordered">
+                <thead style="background: #ededed">
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha de Creación</th>
+                        <th>Cliente</th>
+                        <th>Proyecto</th>
+                        <th>Consulta</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ cita.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                            <td>{{ cita.cliente.first_name }} {{ cita.cliente.last_name }}</td>
+                            <td>{{ cita.proyecto.nombre }}</td>
+                            <td>{{ cita.consulta }}</td>
+                            <td>
+                                <select class="form-select estado-cita" data-cita-id="{{ cita.id }}">
+                                    <option value="pendiente" {% if cita.estado == "pendiente" %}selected{% endif %}>Pendiente</option>
+                                    <option value="completada" {% if cita.estado == "completada" %}selected{% endif %}>Completada</option>
+                                    <option value="reabierta" {% if cita.estado == "reabierta" %}selected{% endif %}>Reabierta</option>
+                                </select>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No tienes citas asignadas.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Actualizar el estado de la cita dinámicamente
+        $(document).on('change', '.estado-cita', function() {
+            const citaId = $(this).data('cita-id');
+            const nuevoEstado = $(this).val();
+
+            $.ajax({
+                url: "{% url 'actualizar_estado_cita' %}",
+                method: "POST",
+                data: {
+                    'cita_id': citaId,
+                    'estado': nuevoEstado,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Ocurrió un error al actualizar el estado.');
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

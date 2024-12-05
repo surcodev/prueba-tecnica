@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary-subtle shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'panel_cliente' %}">Panel Cliente</a>
+        </div>
+    </nav>
+
+    <!-- Formulario de Cita -->
+    <div class="container my-5">
+        <h3 class="text-center mb-4">Formulario para Crear cita</h3>
+        <form method="post" class="mt-4 form-container" style="max-width: 700px; margin: 0 auto;">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="proyecto" class="form-label">Selecciona el proyecto</label>
+                <select id="proyecto" name="proyecto" class="form-control">
+                    {% for proyecto in proyectos %}
+                        <option value="{{ proyecto.id }}">{{ proyecto.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="consulta" class="form-label">Consulta</label>
+                <textarea id="consulta" name="consulta" class="form-control" rows="4" placeholder="Escribe tu consulta ..."></textarea>
+            </div>
+            
+                <center>
+                    <button type="submit" class="btn btn-secondary">Guardar Cita</button>
+                </center>
+            
+        </form>
+    </div>
+
+
+{% endblock %}
