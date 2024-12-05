@@ -16,6 +16,9 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'  # El campo email será usado como el nombre de usuario
     REQUIRED_FIELDS = []
 
+    class Meta:
+        db_table = 'Usuario'
+
     def __str__(self):
         return self.email
 
@@ -23,6 +26,9 @@ class CustomUser(AbstractUser):
 class Proyecto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
+
+    class Meta:
+        db_table = 'Proyecto'
 
     def __str__(self):
         return self.nombre
@@ -44,6 +50,9 @@ class Cita(models.Model):
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='citas_cliente')
     agente = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_agente')
     estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default='pendiente')
+
+    class Meta:
+        db_table = 'Cita'
 
     def __str__(self):
         return f"Cita de {self.cliente.username} sobre {self.proyecto.nombre}"
